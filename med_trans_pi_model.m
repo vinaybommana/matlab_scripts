@@ -83,7 +83,7 @@ for l = 10 : 10 : 130
     
     % voltage at the sending end
     V_s = (((1 + ((Y * Z) / 2)) * V_r) + (Z * I_r));
-    V_no_load = (V_s / (1 + (Y * Z)));
+    V_no_load = (V_s / (1 + ((Y * Z) / 2)));
     
     % current at the sending end
     I_s = ((Y * (1 + (Y * Z) / 4) * V_r) + (1 + ((Y * Z) / 2)) * I_r);
@@ -92,7 +92,7 @@ for l = 10 : 10 : 130
     percent_regulation(k) = ((abs(V_no_load) - V_r) / V_r) * 100;
     
     % per phase losses
-    losses(k) = (Ir_mag ^ 2) * resistance * l;
+    losses(k) = (abs((I_s - (V_s * (Y / 2))) ^ 2) * resistance * l);
     total_losses(k) = 3 * losses(k);
     
     efficiency(k) = (P_r / (P_r + total_losses(k))) * 100;
@@ -113,6 +113,9 @@ disp(efficiency);
 
 disp('voltage at sending end');
 disp(V_s);
+
+disp('current at sending end (Is)');
+disp(I_s);
 
 disp('current at receiving end');
 disp(I_r);
